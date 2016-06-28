@@ -3,42 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shoppers.Catalogue.Data;
+using Shoppers.Catalogue.Models;
 
 namespace Shoppers.Catalogue.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        public ValuesController(ProductCatalogueContext db)
+        {
+            this.db = db;
+        }
+
+        private ProductCatalogueContext db { get; set; }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            using (db)
+            {
+                return Ok(db.Products.Take(10).ToArray());
+            }
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            using (db)
+            {
+                var product = db.Products.SingleOrDefault(p => p.Id == id);
+                return product == null ? NotFound(string.Format("Product with Id = {0} not found", id)) as IActionResult : Ok(product) as IActionResult;
+            }
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody]Product value)
         {
+            if (ModelState.IsValid)
+            {
+                using (db)
+                {
+                    return Ok(await db.Products.Add(value).Context.SaveChangesAsync());
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            using (db)
+            {
+                var product = db.Products.SingleOrDefault(p => p.Id == id);
+
+                if (product != null)
+                {
+                    await db.Remove(product).Context.SaveChangesAsync();
+
+                    return Ok(product);
+                }
+                else
+                {
+                    return NotFound(string.Format("Product with Id = {0} not found", id));
+                }
+
+            }
         }
     }
 }

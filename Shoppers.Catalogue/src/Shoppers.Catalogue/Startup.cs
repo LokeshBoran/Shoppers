@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shoppers.Catalogue.Data;
 
 namespace Shoppers.Catalogue
 {
@@ -27,6 +28,10 @@ namespace Shoppers.Catalogue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //This is singleton because its inmemory ... otherwise having a Singleton database instance is reciepy for disaster.
+            services.AddDbContext<ProductCatalogueContext>();
+
             // Add framework services.
             services.AddMvc();
         }
