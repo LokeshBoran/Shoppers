@@ -5,26 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Shoppers.Catalogue.Data;
 using Shoppers.Catalogue.Models;
+using Shoppers.Core.Data;
 
 namespace Shoppers.Catalogue.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class CatalogueController : Controller
     {
-        public ValuesController(ProductCatalogueContext db)
+        public CatalogueController(UnitOfWork db)
         {
             this.db = db;
+            Products = db.Repository<Product>();
         }
 
-        private ProductCatalogueContext db { get; set; }
+        private UnitOfWork db { get; set; }
+        private readonly IRepository<Product> Products;
 
         // GET api/values
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             using (db)
             {
-                return Ok(db.Products.Take(10).ToArray());
+                return Ok((await Products.FindAll(null)).Take(10).ToArray());
             }
         }
 
@@ -34,7 +37,7 @@ namespace Shoppers.Catalogue.Controllers
         {
             using (db)
             {
-                var product = db.Products.SingleOrDefault(p => p.Id == id);
+                var product = Products.Find(p => p.Id == id);
                 return product == null ? NotFound(string.Format("Product with Id = {0} not found", id)) as IActionResult : Ok(product) as IActionResult;
             }
         }
@@ -47,7 +50,7 @@ namespace Shoppers.Catalogue.Controllers
             {
                 using (db)
                 {
-                    return Ok(await db.Products.Add(value).Context.SaveChangesAsync());
+                    return Ok(await Products.Create(value));
                 }
             }
             else
@@ -63,12 +66,11 @@ namespace Shoppers.Catalogue.Controllers
         {
             using (db)
             {
-                var product = db.Products.SingleOrDefault(p => p.Id == id);
+                var product = await Products.Find(id);
 
                 if (product != null)
                 {
-                    await db.Remove(product).Context.SaveChangesAsync();
-
+                    await  Products.Delete(product);
                     return Ok(product);
                 }
                 else

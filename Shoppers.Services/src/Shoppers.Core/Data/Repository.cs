@@ -7,13 +7,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shoppers.Core.Data
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : CoreEntity
     {
+        public Repository(ICoreDbContext db)
+        {
+            this.db = db;
+        }
+        
+        private ICoreDbContext db { get; set; }
         public DbSet<T> Collection
         {
             get
             {
-                throw new NotImplementedException();
+                return db.Set<T>();
             }
         }
 
@@ -29,14 +35,19 @@ namespace Shoppers.Core.Data
 
         public async Task<IQueryable<T>> FindAll(Expression<Func<T, bool>> predicate)
         {
-            return await Task.Run( () => Collection.Where(predicate));
+           
+            return predicate == null ? Collection : await Task.Run( () => Collection.Where(predicate));
         }
 
         public async Task<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return await Collection.FirstAsync(predicate);
+            return await Collection.SingleOrDefaultAsync(predicate);
         }
 
-        
+        public async Task<T> Find(Int64 id)
+        {
+            return await Task.Run(() => Collection.FirstOrDefault(m => m.Id == id));
+        }
+
     }
 }

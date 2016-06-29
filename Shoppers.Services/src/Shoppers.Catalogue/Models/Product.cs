@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shoppers.Core.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace Shoppers.Catalogue.Models
 {
-    public class Product
+    public class Product : CoreEntity
     {
-        [Range(0, int.MaxValue)]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

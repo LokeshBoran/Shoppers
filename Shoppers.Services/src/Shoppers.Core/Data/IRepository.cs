@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Shoppers.Core.Data
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : CoreEntity
     {
-        DbSet<T> Collection { get; }
         Task<T> Create(T newInstance);
         Task<T> Find(Expression<Func<T, bool>> predicate);
+        Task<T> Find(Int64 id);
         Task<IQueryable<T>> FindAll(Expression<Func<T, bool>> predicate);
         Task<T> Delete(T entity);
     }

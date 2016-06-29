@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Shoppers.Catalogue.Data;
+using Shoppers.Core.Data;
 
 namespace Shoppers.Catalogue
 {
@@ -31,6 +32,9 @@ namespace Shoppers.Catalogue
 
             //This is singleton because its inmemory ... otherwise having a Singleton database instance is reciepy for disaster.
             services.AddDbContext<ProductCatalogueContext>();
+            services.Add(new ServiceDescriptor(typeof(IRepository<>), typeof(Repository<>), ServiceLifetime.Transient));
+            services.AddTransient<ICoreDbContext, ProductCatalogueContext>();
+            services.AddTransient<UnitOfWork>();
 
             // Add framework services.
             services.AddMvc();
