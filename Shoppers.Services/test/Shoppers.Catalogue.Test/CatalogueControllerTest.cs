@@ -40,7 +40,7 @@ namespace Shoppers.Catalogue.Test
 
                 context.Products.Add(new Product() {  Title = "Sample Car 1", ProductType = "Car" } );
                 context.Products.Add(new Product() { Title = "Sample Car 2", ProductType = "Car" } );
-                            context.SaveChanges();
+                context.SaveChanges();
 
             }                
 
