@@ -32,6 +32,27 @@ namespace Shoppers.Catalogue.Controllers
         }
 
         // GET api/values/5
+        [HttpGet("type/{productType}")]
+        public async Task<IActionResult> GetByType(string productType)
+        {
+            using (db)
+            {
+                var products = await Products.FindAll(p => p.ProductType.ToLower().Contains(productType.ToLower()));
+                return products == null ? NotFound(string.Format("Products with ProductType having {0} not found", productType)) as IActionResult : Ok(products) as IActionResult;
+            }
+        }
+
+        [HttpGet("title/{productTitle}")]
+        public async Task<IActionResult> GetByTitle(string productTitle)
+        {
+            using (db)
+            {
+                var products = await Products.FindAll(p => p.Title.ToLower().Contains(productTitle.ToLower()));
+                return products == null ? NotFound(string.Format("Products with Title having {0} not found", productTitle)) as IActionResult : Ok(products) as IActionResult;
+            }
+        }
+
+        // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
