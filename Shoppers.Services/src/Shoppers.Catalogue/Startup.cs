@@ -30,7 +30,6 @@ namespace Shoppers.Catalogue
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //This is singleton because its inmemory ... otherwise having a Singleton database instance is reciepy for disaster.
             services.AddDbContext<ProductCatalogueContext>();
             services.Add(new ServiceDescriptor(typeof(IRepository<>), typeof(Repository<>), ServiceLifetime.Transient));
             services.AddTransient<ICoreDbContext, ProductCatalogueContext>();

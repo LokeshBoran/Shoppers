@@ -21,7 +21,7 @@ namespace Shoppers.Core.Data
         {
             if (!cache.ContainsKey(typeof(T)))
             {
-                cache.Add(typeof(T), provider.GetService(typeof(IRepository<T>)));
+                cache.Add(typeof(T), (provider.GetService(typeof(IRepository<T>)) as IRepository<T>).SetContext(context));
             }
             
             return cache[typeof(T)] as IRepository<T>; ;

@@ -38,7 +38,7 @@ namespace Shoppers.Catalogue.Controllers
             using (db)
             {
                 var products = await Products.FindAll(p => p.ProductType.ToLower().Contains(productType.ToLower()));
-                return products == null ? NotFound(string.Format("Products with ProductType having {0} not found", productType)) as IActionResult : Ok(products) as IActionResult;
+                return products == null ? NotFound(string.Format("Products with ProductType having {0} not found", productType)) as IActionResult : Ok(products.ToArray()) as IActionResult;
             }
         }
 
@@ -48,7 +48,7 @@ namespace Shoppers.Catalogue.Controllers
             using (db)
             {
                 var products = await Products.FindAll(p => p.Title.ToLower().Contains(productTitle.ToLower()));
-                return products == null ? NotFound(string.Format("Products with Title having {0} not found", productTitle)) as IActionResult : Ok(products) as IActionResult;
+                return products == null ? NotFound(string.Format("Products with Title having {0} not found", productTitle)) as IActionResult : Ok(products.ToArray()) as IActionResult;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Shoppers.Catalogue.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Int64 id)
         {
             using (db)
             {

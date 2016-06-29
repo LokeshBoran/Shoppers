@@ -9,9 +9,10 @@ namespace Shoppers.Core.Data
 {
     public class Repository<T> : IRepository<T> where T : CoreEntity
     {
-        public Repository(ICoreDbContext db)
+        public Repository<T> SetContext(ICoreDbContext db)
         {
             this.db = db;
+            return this;
         }
         
         private ICoreDbContext db { get; set; }

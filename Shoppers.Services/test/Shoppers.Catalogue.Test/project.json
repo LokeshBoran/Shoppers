@@ -11,7 +11,8 @@
       "version": "1.0.0-rc2-3002702",
       "type": "platform"
     },
-    "xunit": "2.1.0-rc2-*"
+    "xunit": "2.1.0-rc2-*",
+    "Shoppers.Catalogue": "1.*"
   },
 
   "frameworks": {

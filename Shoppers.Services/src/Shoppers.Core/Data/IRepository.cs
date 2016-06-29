@@ -9,6 +9,7 @@ namespace Shoppers.Core.Data
 {
     public interface IRepository<T> where T : CoreEntity
     {
+        Repository<T> SetContext(ICoreDbContext db);
         Task<T> Create(T newInstance);
         Task<T> Find(Expression<Func<T, bool>> predicate);
         Task<T> Find(Int64 id);
