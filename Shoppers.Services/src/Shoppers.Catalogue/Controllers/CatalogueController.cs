@@ -21,7 +21,7 @@ namespace Shoppers.Catalogue.Controllers
         private UnitOfWork db { get; set; }
         private readonly IRepository<Product> Products;
 
-        // GET api/values
+        
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -31,7 +31,7 @@ namespace Shoppers.Catalogue.Controllers
             }
         }
 
-        // GET api/values/5
+       
         [HttpGet("type/{productType}")]
         public async Task<IActionResult> GetByType(string productType)
         {
@@ -52,7 +52,7 @@ namespace Shoppers.Catalogue.Controllers
             }
         }
 
-        // GET api/values/5
+         
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -63,7 +63,7 @@ namespace Shoppers.Catalogue.Controllers
             }
         }
 
-        // POST api/values
+         
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Product value)
         {
@@ -71,7 +71,8 @@ namespace Shoppers.Catalogue.Controllers
             {
                 using (db)
                 {
-                    return Ok(await Products.Create(value));
+                    var product = await Products.Create(value);
+                    return CreatedAtAction("Get", "Catalogue", new { Id = product.Id }, product );
                 }
             }
             else
@@ -81,7 +82,7 @@ namespace Shoppers.Catalogue.Controllers
         }
 
 
-        // DELETE api/values/5
+         
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {

@@ -24,7 +24,7 @@ namespace Shoppers.Pricing.Controllers
         private readonly IRepository<ProductPricing> _productPrices;
         private readonly ICatalogueWebRepository _catalogueWebRepository;
 
-        // GET api/values
+         
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -60,28 +60,9 @@ namespace Shoppers.Pricing.Controllers
                     }));
             }
         }
-        // // GET api/values/5
-        // [HttpGet("type/{productType}")]
-        // public async Task<IActionResult> GetByType(string productType)
-        // {
-        //     using (db)
-        //     {
-        //         var products = await _productPrices.FindAll(p => p.ProductType.ToLower().Contains(productType.ToLower()));
-        //         return products == null ? NotFound(string.Format("Products with ProductType having {0} not found", productType)) as IActionResult : Ok(products.ToArray()) as IActionResult;
-        //     }
-        // }
+        
 
-        // [HttpGet("title/{productTitle}")]
-        // public async Task<IActionResult> GetByTitle(string productTitle)
-        // {
-        //     using (db)
-        //     {
-        //         var products = await _productPrices.FindAll(p => p.Title.ToLower().Contains(productTitle.ToLower()));
-        //         return products == null ? NotFound(string.Format("Products with Title having {0} not found", productTitle)) as IActionResult : Ok(products.ToArray()) as IActionResult;
-        //     }
-        // }
-
-        // GET api/values/5
+         
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -92,7 +73,7 @@ namespace Shoppers.Pricing.Controllers
             }
         }
 
-        // POST api/values
+        
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]ProductPricing value)
         {
@@ -100,7 +81,10 @@ namespace Shoppers.Pricing.Controllers
             {
                 using (db)
                 {
-                    return Ok(await _productPrices.Create(value));
+                    var productPrice = await _productPrices.Create(value);
+
+                    return CreatedAtAction("Get", "Price", new { Id = productPrice.Id }, productPrice );
+ 
                 }
             }
             else
@@ -110,7 +94,7 @@ namespace Shoppers.Pricing.Controllers
         }
 
 
-        // DELETE api/values/5
+         
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Int64 id)
         {
