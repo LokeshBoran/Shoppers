@@ -10,6 +10,7 @@ TOOLS USED:
 
 # How to run
 * Open two terminals, go to "Shoppers.Catalogue" and "Shoppers.Pricing", then type `dotnet restore && dotnet run`
+* To run unit test, go to "Shoppers.Catalogue.Test" and type `dotnet restore && dotnet test`
 * To run angular app go to "Shoppers.Web" and type `npm install && bower install` (when you visit the folder for the first time) then do `gulp serve` to launch the app. Please make sure that Both APIs are up and running otherwise angular app will fail to load the page, as I mentioned error handling is not done due to lack of time.
 
 Assumptions and remarks.
@@ -24,6 +25,7 @@ Assumptions and remarks.
 * The arch. diagram does not cover high availablity for database instances. It is assumed that database base are up and running and a reachable from the docker containers.
 * No security measures have been taken.
 * Microservices have been designed to be idemopent (except inmemory database).
+* Minimal unit test have been written, though full `CatalogueController` has been tested.
 
 
 Please let me know if something else is needed.
