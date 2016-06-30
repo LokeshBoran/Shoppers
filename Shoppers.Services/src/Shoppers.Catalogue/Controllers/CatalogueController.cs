@@ -54,11 +54,11 @@ namespace Shoppers.Catalogue.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             using (db)
             {
-                var product = Products.Find(p => p.Id == id);
+                var product = await Products.Find(p => p.Id == id);
                 return product == null ? NotFound(string.Format("Product with Id = {0} not found", id)) as IActionResult : Ok(product) as IActionResult;
             }
         }

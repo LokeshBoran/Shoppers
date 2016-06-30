@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Shoppers.Core.Data;
+using Shoppers.Core.Rest.Catalogue;
+using Shoppers.Pricing.Data;
 
 namespace Shoppers.Pricing
 {
@@ -27,6 +30,14 @@ namespace Shoppers.Pricing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PricingContext>();
+            services.Add(new ServiceDescriptor(typeof(IRepository<>), typeof(Repository<>), ServiceLifetime.Transient));
+            services.AddTransient<ICoreDbContext, PricingContext>();
+            services.AddTransient<UnitOfWork>();
+            services.AddSingleton( typeof(IConfigurationRoot), Configuration);
+
+            services.AddTransient<ICatalogueWebRepository,CatalogueWebRepository>();
+
             // Add framework services.
             services.AddMvc();
         }

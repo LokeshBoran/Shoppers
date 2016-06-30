@@ -14,7 +14,8 @@
       "version": "1.0.0-rc2-3002702",
       "type": "platform"
     },
-    "Shoppers.Core":  "1.0.*"
+    "Shoppers.Core":  "1.0.*",
+    "System.Threading.Tasks.Extensions": "4.0.0-rc2-24027"
   },
 
   "tools": {

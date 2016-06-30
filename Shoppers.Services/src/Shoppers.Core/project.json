@@ -6,8 +6,13 @@
     "Microsoft.NETCore.App": {
       "version": "1.0.0-rc2-3002702",
       "type": "platform"
-    }
-  },
+    },
+    "Microsoft.AspNet.WebApi.Client": "5.2.3",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0-rc2-final",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0-rc2-final",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc2-final",
+    "System.Runtime.Serialization.Xml": "4.*"
+ },
 
   "frameworks": {
     "netcoreapp1.0": {
