@@ -6,13 +6,38 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr) {
+  function MainController($timeout, webDevTec, toastr, catalogueServiceUrl, pricingServiceUrl, Restangular) {
     var vm = this;
 
     vm.awesomeThings = [];
     vm.classAnimation = '';
     vm.creationDate = 1467161647968;
     vm.showToastr = showToastr;
+    vm.products = [];
+    vm.productPricing = [];
+
+
+
+      Restangular.allUrl('catalogue', catalogueServiceUrl + '/catalogue').post({
+        "Title": "Sample Product",
+        "ProductType": "Other"
+      });
+
+  
+      Restangular.allUrl('price', pricingServiceUrl + '/price/product/1')
+     .getList()
+     .then(function (data) {
+       vm.productPricing = data;
+
+       Restangular.allUrl('price', pricingServiceUrl + '/price').post({
+        "ProductId": 1,
+        "Provider": "Other",
+        "Price": 1.0
+      });
+
+     });
+
+     
 
     activate();
 

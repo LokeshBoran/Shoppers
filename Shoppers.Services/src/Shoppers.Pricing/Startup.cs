@@ -40,6 +40,13 @@ namespace Shoppers.Pricing
 
             // Add framework services.
             services.AddMvc();
+
+             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +55,9 @@ namespace Shoppers.Pricing
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseCors("AllowAll");
             app.UseMvc();
+            
         }
     }
 }

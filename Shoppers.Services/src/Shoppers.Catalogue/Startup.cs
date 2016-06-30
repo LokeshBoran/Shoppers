@@ -20,6 +20,7 @@ namespace Shoppers.Catalogue
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -37,6 +38,12 @@ namespace Shoppers.Catalogue
 
             // Add framework services.
             services.AddMvc();
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +51,8 @@ namespace Shoppers.Catalogue
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }
